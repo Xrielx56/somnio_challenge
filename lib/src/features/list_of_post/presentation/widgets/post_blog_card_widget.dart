@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PostBlogCardWidget extends StatelessWidget {
-  const PostBlogCardWidget({super.key, required this.title, required this.subtitle});
+  const PostBlogCardWidget({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
 
   final String title;
   final String subtitle;

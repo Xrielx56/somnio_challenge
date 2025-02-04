@@ -58,12 +58,12 @@ class HomePage extends StatelessWidget {
               title: Column(
                 children: [
                   Text('Blog'),
-                  SizedBox(height: 10),
-                  Text('subtitle'),
+                  SizedBox(height: 5),
+                  Text('Challenge Somnio'),
                 ],
               ),
               bottom: TabBar(
-                indicatorWeight: 4.5,
+                indicatorWeight: 5,
                 tabs: [
                   Tab(child: Text('Principal')),
                   Tab(child: Text('Recomendados')),

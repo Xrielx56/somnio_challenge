@@ -9,24 +9,22 @@ part 'list_post_cubit.freezed.dart';
 
 class ListPostCubit extends Cubit<ListPostState> {
   ListPostCubit({
-    // required this.listOfPostRepository,
     required this.context,
   }) : super(const ListPostState.initial()) {
     fetchListOfPost();
   }
-  // final ListOfPostRepository listOfPostRepository;
   final BuildContext context;
 
   Future<void> fetchListOfPost() async {
     final repository = RepositoryProvider.of<ListOfPostRepository>(context);
 
-    emit(ListPostState.loading());
+    emit(const ListPostState.loading());
 
     final either = await repository.fetchLisOfPost();
 
     either.fold(
       (failure) {
-        emit(ListPostState.failure());
+        emit(const ListPostState.failure());
       },
       (response) {
         emit(ListPostState.loaded(posts: response));
