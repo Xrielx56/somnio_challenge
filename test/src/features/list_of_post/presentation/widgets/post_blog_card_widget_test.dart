@@ -50,11 +50,9 @@ void main() {
 
       expect(actionCard, findsOneWidget);
       await widgetTester.tap(actionCard);
-
       await widgetTester.pump();
 
       expect(readMoreAction, findsOneWidget);
-
       await widgetTester.tap(readMoreAction);
       await widgetTester.pump();
     },
