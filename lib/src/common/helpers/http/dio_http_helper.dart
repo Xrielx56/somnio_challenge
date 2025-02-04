@@ -95,27 +95,6 @@ class DioHttpHelper implements HttpHelper {
     }
   }
 
-  @override
-  Future<Either<HttpResponseError, HttpResponse>> delete(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-    dynamic data,
-    Options? options,
-  }) async {
-    try {
-      final dioResponse = await _dio.delete(path, queryParameters: queryParameters, data: data, options: options);
-      return Right(HttpResponse(statusCode: dioResponse.statusCode, data: dioResponse.data));
-    } on DioError catch (error) {
-      return _onDioError(
-        error: error,
-        onRetry: (accessToken) => delete(path,
-            data: data,
-            queryParameters: queryParameters,
-            options: Options(headers: _headerForRefreshToken(accessToken))),
-      );
-    }
-  }
-
   Future<Either<HttpResponseError, HttpResponse>> _onDioError({
     required DioError error,
     required Future<Either<HttpResponseError, HttpResponse>> Function(String accessToken) onRetry,

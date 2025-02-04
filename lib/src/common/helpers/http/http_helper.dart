@@ -25,11 +25,4 @@ abstract class HttpHelper {
     Map<String, dynamic>? queryParameters,
     Options? options,
   });
-
-  Future<Either<HttpResponseError, HttpResponse>> delete(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  });
 }

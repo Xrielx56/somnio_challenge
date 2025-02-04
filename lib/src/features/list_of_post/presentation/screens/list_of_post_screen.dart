@@ -6,7 +6,7 @@ class ListOfPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
+    return const TabBarView(
       children: [
         PrincipalListBody(),
         Center(child: Text('view del segundo tab')),

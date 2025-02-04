@@ -1,8 +1,8 @@
 import 'package:challenge_somnio/src/features/list_of_post/domain/entities/post_entity.dart';
 import 'package:challenge_somnio/src/features/list_of_post/domain/repositories/list_of_post_repository.dart';
-import 'package:challenge_somnio/src/features/list_of_post/presentation/presentation.dart';
 import 'package:challenge_somnio/src/features/list_of_post/presentation/providers/cubit/list_post_cubit.dart';
 import 'package:challenge_somnio/src/features/list_of_post/presentation/screens/principal_list_body.dart';
+import 'package:challenge_somnio/src/features/list_of_post/presentation/widgets/post_blog_card_widget.dart';
 import 'package:challenge_somnio/src/src.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ void main() {
   }
 
   testWidgets(
-    'List of post screen test widget',
+    'principal list body test with success response',
     (widgetTester) async {
       setUpRepositories(state: TestState.success);
 
@@ -42,18 +42,43 @@ void main() {
         BlocProvider(
           create: (_) => ListPostCubit(repository: mockRepository),
           child: const MaterialApp(
-            home: DefaultTabController(
-              length: 2,
-              child: ListOfPostScreen(),
-            ),
+            home: PrincipalListBody(),
           ),
         ),
       );
 
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      await widgetTester.pump();
       await widgetTester.pumpAndSettle();
 
-      expect(find.byType(ListOfPostScreen), findsOneWidget);
-      expect(find.byType(PrincipalListBody), findsOneWidget);
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+      expect(find.byType(PostBlogCardWidget), findsNWidgets(3));
+    },
+  );
+
+  testWidgets(
+    'principal list body test with error response',
+    (widgetTester) async {
+      setUpRepositories(state: TestState.error);
+
+      await widgetTester.pumpWidget(
+        BlocProvider(
+          create: (_) => ListPostCubit(repository: mockRepository),
+          child: const MaterialApp(
+            home: PrincipalListBody(),
+          ),
+        ),
+      );
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      await widgetTester.pump();
+      await widgetTester.pumpAndSettle();
+
+      expect(find.byType(SingleChildScrollView), findsNothing);
+      expect(find.byType(PostBlogCardWidget), findsNothing);
+      expect(find.text('Failure'), findsOne);
     },
   );
 }

@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
             ),
           ],
           body: BlocProvider(
-            create: (_) => ListPostCubit(context: context),
+            create: (_) => ListPostCubit(repository: GetIt.instance.get<ListOfPostRepository>()),
             child: const ListOfPostScreen(),
           ),
         ),
