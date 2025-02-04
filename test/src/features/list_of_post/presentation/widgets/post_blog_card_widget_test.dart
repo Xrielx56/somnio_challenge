@@ -1,7 +1,6 @@
+import 'package:challenge_somnio/src/common/common.dart';
 import 'package:challenge_somnio/src/features/list_of_post/presentation/providers/cubit/list_post_cubit.dart';
-import 'package:challenge_somnio/src/features/list_of_post/presentation/screens/principal_list_body.dart';
 import 'package:challenge_somnio/src/features/list_of_post/presentation/widgets/post_blog_card_widget.dart';
-import 'package:challenge_somnio/src/src.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,51 +23,40 @@ void main() {
   }
 
   testWidgets(
-    'principal list body test with success response',
+    'Post blog card widget',
     (widgetTester) async {
       setUpRepositories(state: TestState.success);
-
       await widgetTester.pumpWidget(
         BlocProvider(
           create: (_) => ListPostCubit(repository: mockRepository),
           child: const MaterialApp(
-            home: PrincipalListBody(),
+            home: PostBlogCardWidget(
+              title: 'title',
+              subtitle: 'subtitle',
+            ),
           ),
         ),
       );
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text('title'), findsOne);
+      expect(find.text('subtitle'), findsOne);
+      expect(find.text('Read more'), findsOne);
+      expect(find.byType(Card), findsOneWidget);
+      expect(find.byType(ClipRRect), findsOneWidget);
+      expect(find.byType(GestureDetector), findsNWidgets(2));
+
+      final actionCard = find.byKey(const Key('action-card'));
+      final readMoreAction = find.byKey(const Key('read-more-action'));
+
+      expect(actionCard, findsOneWidget);
+      await widgetTester.tap(actionCard);
 
       await widgetTester.pump();
-      await widgetTester.pumpAndSettle();
 
-      expect(find.byType(SingleChildScrollView), findsOneWidget);
-      expect(find.byType(PostBlogCardWidget), findsNWidgets(3));
-    },
-  );
+      expect(readMoreAction, findsOneWidget);
 
-  testWidgets(
-    'principal list body test with error response',
-    (widgetTester) async {
-      setUpRepositories(state: TestState.error);
-
-      await widgetTester.pumpWidget(
-        BlocProvider(
-          create: (_) => ListPostCubit(repository: mockRepository),
-          child: const MaterialApp(
-            home: PrincipalListBody(),
-          ),
-        ),
-      );
-
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
+      await widgetTester.tap(readMoreAction);
       await widgetTester.pump();
-      await widgetTester.pumpAndSettle();
-
-      expect(find.byType(SingleChildScrollView), findsNothing);
-      expect(find.byType(PostBlogCardWidget), findsNothing);
-      expect(find.text('Failure'), findsOne);
     },
   );
 }

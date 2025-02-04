@@ -13,6 +13,7 @@ class PostBlogCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('action-card'),
       behavior: HitTestBehavior.opaque,
       onTap: () {
         print('navigation action in card');
@@ -65,7 +66,10 @@ class PostBlogCardWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   GestureDetector(
-                    onTap: () {},
+                    key: const Key('read-more-action'),
+                    onTap: () {
+                      print('read more action');
+                    },
                     child: Row(
                       children: [
                         Text(
